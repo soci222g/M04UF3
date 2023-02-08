@@ -1,0 +1,19 @@
+{
+  "name": "m04uf3",
+  "version": "1.0.0",
+  "description": "javaScript en otro archivo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soci222g/M04UF3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soci222g/M04UF3/issues"
+  },
+  "homepage": "https://github.com/soci222g/M04UF3#readme"
+}
