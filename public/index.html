@@ -32,6 +32,7 @@ let attack;
 let player_speed = 2;
 let player;
 let enemies =[];
+let enemies_max = 28;
 let enemy_padding = 128;
 let enemy_position = [
 	{x: enemy_padding, y:enemy_padding},
@@ -51,28 +52,40 @@ let enemy_position = [
 	
 function precarga()
 {
-	this.load.image("player-img", "jordi.png");
-	this.load.image("enemy-img", "player.png");
-
+	this.load.image("player-img", "imgs/player.png");
+	this.load.image("bg-img", "imgs/background.png");
+	this.load.image("weapon-img", "imgs/bat_wood.png");
+	
+	for (let i = 1; i <= enemies_max; i++){
+		this.load.image("enemy"+i, "imgs/enemy"+i+".png");
 	
 	}
+}
+
 function crear(){
 
-	player = this.add.image(config.width/2 ,config.height/2, "player-img");
+	let bg = this.add.image(config.width/2, config.height/2, "bg-img");
+	player = this.add.image(config.width/2, config.height/2, "player-img");
+	attack = this.add.image(config.width/2, config.height/2, "weapon-img");
+	attack.visible = false;
 	
 	this.physics.add.existing(player, false);
 
 	player.body.setCollideWorldBounds(true);
 
-	attack = this.add.image(player.x, player.y, "player-img");
 	for (let i = 0; i < enemy_position.length; i++){
-		enemies.push(this.add.image(enemy_position[i].x, enemy_position[i].y, "player-img"));
-	
-		this.physics.add.existing(enemies[i], false);
-
-		enemies[i].body.setCollideWorldBounds(true);
 		
-		this.physics.add.collider(enemies[i], enemies);
+		let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		this.physics.add.existing(e, false);
+
+		e.body.setCollideWorldBounds(true);
+		
+	this.physics.add.collider(e, enemies);	
 	}
 
 
@@ -83,15 +96,13 @@ function crear(){
 	key_up = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 	key_down = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
-}
+setInterval(function(){
+	attack.visible = true;
+	setTimeout(function(){
+		attack.visible = false;
+	}, 400);
+}, 1000);
 
-function spawn_attack(){
-
-
-	attack = set.add.image(player.x, player.y, "player-img");
-	this.physics.add.esisting(attack, false);
-	this.physic.add.collider(attack, enemies);
-	
 
 }
 
@@ -112,10 +123,11 @@ function actualizar()
 
 	else if (key_down.isDown){
 		player.y += player_speed;
-	}	
+	
+	}
 
-setInterval(spawn_attack, 1000);
-
+	attack.x = player.x+48;
+	attack.y = player.y;
  for (let i = 0; i < enemy_position.length; i++){
       this.physics.moveToObject(enemies[i], player, 50);		
 	}
