@@ -33,7 +33,6 @@ function send_player (response)
 	});
 }
 
-
 http.createServer(function(request, response){
 	console.log(request.url);
 
@@ -44,6 +43,7 @@ http.createServer(function(request, response){
 			send_player(response);
 
 			break;
+		
 
 		default:
 			send_index(response);

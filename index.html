@@ -28,6 +28,7 @@ scene:{
 };
 
 const game = new Phaser.Game(config);
+let attack;
 let player_speed = 2;
 let player;
 let enemies =[];
@@ -58,11 +59,12 @@ function precarga()
 function crear(){
 
 	player = this.add.image(config.width/2 ,config.height/2, "player-img");
-
+	
 	this.physics.add.existing(player, false);
 
 	player.body.setCollideWorldBounds(true);
 
+	attack = this.add.image(player.x, player.y, "player-img");
 	for (let i = 0; i < enemy_position.length; i++){
 		enemies.push(this.add.image(enemy_position[i].x, enemy_position[i].y, "player-img"));
 	
@@ -80,6 +82,16 @@ function crear(){
 	key_right= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 	key_up = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 	key_down = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+
+}
+
+function spawn_attack(){
+
+
+	attack = set.add.image(player.x, player.y, "player-img");
+	this.physics.add.esisting(attack, false);
+	this.physic.add.collider(attack, enemies);
+	
 
 }
 
@@ -102,7 +114,8 @@ function actualizar()
 		player.y += player_speed;
 	}	
 
-	
+setInterval(spawn_attack, 1000);
+
  for (let i = 0; i < enemy_position.length; i++){
       this.physics.moveToObject(enemies[i], player, 50);		
 	}
