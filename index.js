@@ -1,9 +1,9 @@
 const http = require("http");
 const fs = require("fs");
-const file_static = require("node-static");
+const files_static = require("node-static");
 
-let files = new file_static.Server("./public");
-
+let files = new files_static.Server("./public"); 
+ 
 http.createServer(function(request, response){
 	console.log(request.url);
 

@@ -28,9 +28,18 @@ scene:{
 };
 
 const game = new Phaser.Game(config);
+
+
+let score = 0;
+let score_text;
+
+let timer = 0;
+let timer_text;
+
 let attack;
 let player_speed = 2;
 let player;
+let enemy_speed = 50;
 let enemies =[];
 let enemies_max = 28;
 let enemy_padding = 128;
@@ -69,6 +78,7 @@ function crear(){
 	attack = this.add.image(config.width/2, config.height/2, "weapon-img");
 	attack.visible = false;
 	
+
 	this.physics.add.existing(player, false);
 
 	player.body.setCollideWorldBounds(true);
@@ -85,52 +95,118 @@ function crear(){
 
 		e.body.setCollideWorldBounds(true);
 		
-	this.physics.add.collider(e, enemies);	
 	}
 
 
 		this.physics.add.collider(player, enemies);
+		this.physics.add.collider(attack, enemies);
+
 
 	key_left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 	key_right= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 	key_up = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 	key_down = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
-setInterval(function(){
+setInterval(() => {
 	attack.visible = true;
-	setTimeout(function(){
-		attack.visible = false;
-	}, 400);
-}, 1000);
+	this.physics.world.enable(attack);
+		setTimeout(() => {
+			this.physics.world.disable(attack);
+			attack.visible = false;
 
+   }, 400);
+},2000);
+
+score_text = this.add.text(16,16,'0',{font:'400 64px Arial'});
+timer_text = this.add.text(3 * config.width / 4, 24, "Time: 0", {font:'600 40px Arial'});
+
+	setInterval(() => {
+		timer++;
+		timer_text.setText("Time: " + timer + "s");
+
+	},1000);
 
 }
+let last_dir = "L";
+let last_x = config.width/2;
+let last_y = config.height/2;
 
 function actualizar()
 {
-
 	if (key_left.isDown){
-		player.x -= player_speed;
+
+		player.x -=  player_speed;
+		last_x = player.x;
+		last_y = player.y;
+		last_dir = "L";
+
 	}
 	else if (key_right.isDown){
 		player.x += player_speed;
+		last_x = player.x;
+		last_y = player.y;
+		last_dir = "R";
 	}
 
 
 	 if (key_up.isDown){
 		player.y -= player_speed;
+		last_x = player.x;
+		last_y = player.y;
+		last_dir = "U";
 	}	
 
 	else if (key_down.isDown){
 		player.y += player_speed;
-	
+		last_x = player.x;
+		last_y = player.y;
+		last_dir = "D";
 	}
 
-	attack.x = player.x+48;
+switch(last_dir){
+case "L":
+	attack.x = player.x - 48;
 	attack.y = player.y;
- for (let i = 0; i < enemy_position.length; i++){
-      this.physics.moveToObject(enemies[i], player, 50);		
+	attack.rotation = 180*Math.PI/180;
+	break;
+case "R":
+	attack.x = player.x + 48;
+	attack.y = player.y;
+	attack.rotation = 0;
+	break;
+case "U":
+	attack.x = player.x;
+	attack.y = player.y - 48;
+	attack.rotation = 270*Math.PI/180;
+	break;
+case "D":
+	attack.x = player.x;
+	attack.y = player.y + 48;
+	attack.rotation = 90*Math.PI/180;
+	break;
+}
+
+
+for (let i = 0; i < enemy_position.length; i++){
+
+	this.physics.collide(enemies[i], enemies);
+    this.physics.moveToObject(enemies[i], player, enemy_speed);
+	  if(this.physics.collide(attack, enemies[i]))
+		{	  
+			console.log("te pego");
+		enemies[i].visible = false;
+
+		this.physics.world.disable(enemies[i]);
+
+		score_text.text = ++score;
+
+
+	  }
+
 	}
+
+
+
 
 }
 
