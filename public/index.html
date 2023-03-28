@@ -238,6 +238,7 @@ case "D":
 
 for (let i = 0; i < enemies.length; i++){
 
+ 	this.physics.collide(player, enemies);
 	this.physics.collide(enemies[i], enemies);
     this.physics.moveToObject(enemies[i], player, enemy_speed);
 	  if(this.physics.collide(attack, enemies[i]))
