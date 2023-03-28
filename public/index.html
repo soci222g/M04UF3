@@ -68,7 +68,9 @@ let enemy_position = [
 
 	{x: - enemy_padding, y: config.height/2}
 	];
-	
+function play(){
+console.log("hey");
+}	
 function precarga()
 {
 	this.load.image("player-img", "imgs/player.png");
@@ -94,9 +96,10 @@ function crear(){
 	this.physics.add.existing(player, false);
 
 	player.body.setCollideWorldBounds(true);
-		this.physics.add.collider(player, enemies);
-		this.physics.add.collider(attack, false);
-	for (let i = 0; i < enemy_position.length; i++){
+	
+	this.physics.add.collider(attack, false);
+
+for (let i = 0; i < enemy_position.length; i++){
 		
 		let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
 		
@@ -110,7 +113,6 @@ function crear(){
 
 		
 	}
-
 
 	key_left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 	key_right= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -133,44 +135,6 @@ function crear(){
 	 last_dir = "L";
 	 last_x = config.width/2;
 	 last_y = config.height/2;
-
-
-
-
-dific = dificultad();
-console.log(dific);
-	
-
-
-
-		setInterval(() => {
-		switch (dific){
-			case"easy":
-			for(let i = 0; i < 2; i++){
-			console.log("a");	
-			}
-
-			
-			break;
-
-			case"normal":
-			for(let i = 0; i < 3; i++){
-				console.log("b");
-			}
-			break;
-
-			case"hard":
-			for(let i = 0; i < 5; i++){
-				conosle.log("c");
-			}
-			break;
-
-
-		}
-		},5000);
-
-
-
 
 
 
@@ -242,7 +206,7 @@ for (let i = 0; i < enemy_position.length; i++){
     this.physics.moveToObject(enemies[i], player, enemy_speed);
 	  if(this.physics.collide(attack, enemies[i]))
 		{	  
-
+		
 		enemies[i].visible = false;
 
 		this.physics.world.disable(enemies[i]);
@@ -253,39 +217,100 @@ for (let i = 0; i < enemy_position.length; i++){
 	  }
 
 	}
-	if(time_type === "incrise"){
+
+
+dific = dificultad();
+console.log(dific);
+
+
+
+
+		setInterval(() => {
+		switch (dific){
+			case"easy":
+			for(let i = 0; i < 2; i++){
+			
+				let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+				let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+				enemies.push(e);
+		
+		 	this.physics.add.existing(e, false);
+
+         	e.body.setCollideWorldBounds(true);
+
+					}
+			
+
+
+			break;
+
+			case"normal":
+			for(let i = 0; i < 2; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		 this.physics.add.existing(e, false);
+
+         e.body.setCollideWorldBounds(true);
+			}		 		 
+			break;
+
+			case"hard":
+		for(let i = 0; i < 2; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		 this.physics.add.existing(e, false);
+
+         e.body.setCollideWorldBounds(true);
+		}
+			break;
+
+
+		
+		}
+		},5000);
+
+
+
+
+}
+
+function incrise(){
 		setInterval(() => {
 			timer++;
 			timer_text.setText("Time: " + timer + "s");
 
 		},1000);
-
-	}
-	
-	if(time_type === "decrise"){
-			time = 300;
+}
+function decrise(){
+	timer =  300;
 		setInterval(() =>{
 			timer--
 			timer_text.setText("Time: " + timer + "s");
 			},1000);
-		
-
-	}
-}
-
-function incrise(){
-	time_type = "incrise";
-	console.log(time_type);
-}
-function decrise(){
-	time_type = "decrise";
-	console.log(time_type);
 }
 
 function dificultad(){
- let dif = document.getElementById("dif").value;
- return dif;
- console.log(dif);
+ let dif = document.getElementsByName("dif");
+ let selected;
+
+ 	for (let i = 0; i < 3; i++){
+		if (dif[i].checked){
+		selected = dif[i].value;
+		}
+	}
+ return selected;
 }
 
 </script>
