@@ -99,7 +99,7 @@ function crear(){
 	
 	this.physics.add.collider(attack, false);
 
-for (let i = 0; i < enemy_position.length; i++){
+for (let i = 0; i < 1; i++){
 		
 		let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
 		
@@ -113,6 +113,7 @@ for (let i = 0; i < enemy_position.length; i++){
 
 		
 	}
+
 
 	key_left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
 	key_right= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -200,7 +201,7 @@ case "D":
 }
 
 
-for (let i = 0; i < enemy_position.length; i++){
+for (let i = 0; i < enemies.length; i++){
 
 	this.physics.collide(enemies[i], enemies);
     this.physics.moveToObject(enemies[i], player, enemy_speed);
@@ -218,68 +219,6 @@ for (let i = 0; i < enemy_position.length; i++){
 
 	}
 
-
-dific = dificultad();
-console.log(dific);
-
-
-
-
-		setInterval(() => {
-		switch (dific){
-			case"easy":
-			for(let i = 0; i < 2; i++){
-			
-				let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-				let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-				enemies.push(e);
-		
-		 	this.physics.add.existing(e, false);
-
-         	e.body.setCollideWorldBounds(true);
-
-					}
-			
-
-
-			break;
-
-			case"normal":
-			for(let i = 0; i < 2; i++){
-
-	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-		enemies.push(e);
-		
-		 this.physics.add.existing(e, false);
-
-         e.body.setCollideWorldBounds(true);
-			}		 		 
-			break;
-
-			case"hard":
-		for(let i = 0; i < 2; i++){
-
-	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-		enemies.push(e);
-		
-		 this.physics.add.existing(e, false);
-
-         e.body.setCollideWorldBounds(true);
-		}
-			break;
-
-
-		
-		}
-		},5000);
 
 
 
@@ -310,7 +249,60 @@ function dificultad(){
 		selected = dif[i].value;
 		}
 	}
- return selected;
+ 
+
+		setInterval(() => {
+		switch (selected){
+			case"easy":
+			for(let i = 0; i < 2; i++){
+			
+				let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+				let e = this.physics.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+				enemies.push(e);
+		
+		 	this.physics.add.existing(e, false);
+
+				 
+
+				}
+			break;
+
+			case"normal":
+			for(let i = 0; i < 2; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		 this.physics.add.existing(e, false);
+
+         
+			}		 		 
+			break;
+
+			case"hard":
+		for(let i = 0; i < 2; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		 this.physics.add.existing(e, false);
+
+       
+		}
+			break;
+
+
+		
+		}
+		},5000);
 }
 
 </script>
@@ -329,7 +321,7 @@ function dificultad(){
 <button type="button" id="time" onclick="incrise(); return false;"> incrise</button>
 <button type="button" id="time" onclick="decrise(); return false;"> decrise</button>
 <br>
-<button type="button" id="play" onclick="play(); return false;">play!! </button>
+<button type="button" id="play" onclick="dificultad(); return false;">play!! </button>
 
 
 
