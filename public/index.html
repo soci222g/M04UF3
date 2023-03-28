@@ -8,6 +8,9 @@
 </head>
 <body>
 <h1> ENTI survivors</h1>
+
+
+
 <script>
 
 const config = {
@@ -29,11 +32,13 @@ scene:{
 
 const game = new Phaser.Game(config);
 
+let dificultad;
 
 let score = 0;
 let score_text;
 
 let timer = 0;
+let time_type;
 let timer_text;
 
 let attack;
@@ -44,19 +49,19 @@ let enemies =[];
 let enemies_max = 28;
 let enemy_padding = 128;
 let enemy_position = [
-	{x: enemy_padding, y:enemy_padding},
-	{x: config.width/2, y:enemy_padding},
-	{x: config.width - enemy_padding, y:enemy_padding},
+	{x: - enemy_padding, y:-enemy_padding},
+	{x: config.width/2, y:-enemy_padding},
+	{x: config.width + enemy_padding, y:-enemy_padding},
 
 
-	{x: config.width - enemy_padding, y: config.height/2},
+	{x: config.width + enemy_padding, y: config.height/2},
 
 
-	{x: config.width - enemy_padding, y: config.height - enemy_padding},
-	{x: config.width/2, y: config.height - enemy_padding},
-	{x: enemy_padding, y: config.height - enemy_padding},
+	{x: config.width + enemy_padding, y: config.height - enemy_padding},
+	{x: config.width/2, y: config.height + enemy_padding},
+	{x: enemy_padding, y: config.height + enemy_padding},
 
-	{x: enemy_padding, y: config.height/2}
+	{x: - enemy_padding, y: config.height/2}
 	];
 	
 function precarga()
@@ -70,6 +75,8 @@ function precarga()
 	
 	}
 }
+
+
 
 function crear(){
 
@@ -91,15 +98,16 @@ function crear(){
 		
 		enemies.push(e);
 		
-		this.physics.add.existing(e, false);
+		 this.physics.add.existing(e, false);
 
-		e.body.setCollideWorldBounds(true);
+         e.body.setCollideWorldBounds(true);
+
 		
 	}
 
 
 		this.physics.add.collider(player, enemies);
-		this.physics.add.collider(attack, enemies);
+		this.physics.add.collider(attack, false);
 
 
 	key_left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -119,17 +127,33 @@ setInterval(() => {
 
 score_text = this.add.text(16,16,'0',{font:'400 64px Arial'});
 timer_text = this.add.text(3 * config.width / 4, 24, "Time: 0", {font:'600 40px Arial'});
+	if(time_type === "incrise"){
+		setInterval(() => {
+			timer++;
+			timer_text.setText("Time: " + timer + "s");
 
-	setInterval(() => {
-		timer++;
-		timer_text.setText("Time: " + timer + "s");
+		},1000);
 
-	},1000);
+	}
+	}
+	if(time_type === "decrise"){
+			time = 300;
+		setInterval(() =>{
+			timer--
+			timer_text.setText("Time: " + timer + "s");
+			},1000);
+		}
 
-}
-let last_dir = "L";
-let last_x = config.width/2;
-let last_y = config.height/2;
+	let last_dir = "L";
+	let last_x = config.width/2;
+	let last_y = config.height/2;
+
+
+
+
+
+
+
 
 function actualizar()
 {
@@ -193,7 +217,7 @@ for (let i = 0; i < enemy_position.length; i++){
     this.physics.moveToObject(enemies[i], player, enemy_speed);
 	  if(this.physics.collide(attack, enemies[i]))
 		{	  
-			console.log("te pego");
+
 		enemies[i].visible = false;
 
 		this.physics.world.disable(enemies[i]);
@@ -210,6 +234,70 @@ for (let i = 0; i < enemy_position.length; i++){
 
 }
 
+function incrise(){
+	time_type = "incrise";
+}
+function decrise(){
+	time_type = "decrise";
+}
+
+function dificultad(){
+ let dif = document.getElementById("dif").value;
+ return dif;
+}
+
+function play(){
+	dificultad = dificultad();
+	score = 0;
+	time_type = time_tipe();
+
+		if(time_type === "incrise"){
+		setInterval(() => {
+			timer++;
+			timer_text.setText("Time: " + timer + "s");
+
+		},1000);
+
+	}
+	}
+	if(time_type === "decrise"){
+			time = 300;
+		setInterval(() =>{
+			timer--
+			timer_text.setText("Time: " + timer + "s");
+			},1000);
+		}
+		setInterval(() => {
+			case"easy":
+			for(let i = 0; i < 2; i++){
+				
+			}
+		
+
+
+
+		}
+
+}
 </script>
+<form>
+<p>Select Dificulty: </p>
+
+<input type="radio" id="dif" value="easy"/>
+<label for="easy">easy</label>
+<input type="radio" id="dif" value="normal"/>
+<label for="normal">normal</label>
+<input type="radio" id="dif" value="hard"/>
+<label for="easy">normal</label>
+
+
+<p>tiempo: </p>
+<button type="button" id="time" onclick="incrise(); return false;"> incrise</button>
+<button type="button" id="time" onclick="decrise(); return false;"> decrise</button>
+<br>
+<button type="button" id="play" onclick="play(); return false;">play!! </button>
+
+
+
 </body>
 </html>
