@@ -97,7 +97,6 @@ function crear(){
 	this.physics.add.collider(attack, false);
 	let dific = dificultad();
 setInterval(() => {
-console.log(dific);
 		switch (dific){
 			case"easy":
 			for(let i = 0; i < 2; i++){
@@ -126,7 +125,7 @@ console.log(dific);
 		
 		 this.physics.add.existing(e, false);
 
-         
+   				      
 			}		 		 
 			break;
 
@@ -306,7 +305,7 @@ function dificultad(){
 <button type="button" id="time" onclick="incrise(); return false;"> incrise</button>
 <button type="button" id="time" onclick="decrise(); return false;"> decrise</button>
 <br>
-<button type="button" id="play" onclick="dificultad(); return false;">play!! </button>
+
 
 
 
