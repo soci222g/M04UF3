@@ -67,10 +67,7 @@ let enemy_position = [
 	{x: enemy_padding, y: config.height + enemy_padding},
 
 	{x: - enemy_padding, y: config.height/2}
-	];
-function play(){
-console.log("hey");
-}	
+	];	
 function precarga()
 {
 	this.load.image("player-img", "imgs/player.png");
@@ -98,10 +95,30 @@ function crear(){
 	player.body.setCollideWorldBounds(true);
 	
 	this.physics.add.collider(attack, false);
-
-for (let i = 0; i < 1; i++){
+	let dific = dificultad();
+setInterval(() => {
+console.log(dific);
+		switch (dific){
+			case"easy":
+			for(let i = 0; i < 2; i++){
+			
+				let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
 		
-		let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+				let e = this.physics.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+				enemies.push(e);
+		
+		 	this.physics.add.existing(e, false);
+
+				 
+
+				}
+			break;
+
+			case"normal":
+			for(let i = 0; i < 3; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
 		
 		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
 		
@@ -109,10 +126,29 @@ for (let i = 0; i < 1; i++){
 		
 		 this.physics.add.existing(e, false);
 
-         e.body.setCollideWorldBounds(true);
+         
+			}		 		 
+			break;
+
+			case"hard":
+		for(let i = 0; i < 5; i++){
+
+	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
+		
+		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
+		
+		enemies.push(e);
+		
+		 this.physics.add.existing(e, false);
+
+       
+		}
+			break;
+
 
 		
-	}
+		}
+		},5000);
 
 
 	key_left = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -249,60 +285,9 @@ function dificultad(){
 		selected = dif[i].value;
 		}
 	}
- 
-
-		setInterval(() => {
-		switch (selected){
-			case"easy":
-			for(let i = 0; i < 2; i++){
-			
-				let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-				let e = this.physics.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-				enemies.push(e);
-		
-		 	this.physics.add.existing(e, false);
-
-				 
-
-				}
-			break;
-
-			case"normal":
-			for(let i = 0; i < 2; i++){
-
-	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-		enemies.push(e);
-		
-		 this.physics.add.existing(e, false);
-
-         
-			}		 		 
-			break;
-
-			case"hard":
-		for(let i = 0; i < 2; i++){
-
-	let enemy = "enemy"+Math.floor(Math.random()*enemies_max+1);
-		
-		let e = this.add.image(enemy_position[i].x, enemy_position[i].y, enemy);
-		
-		enemies.push(e);
-		
-		 this.physics.add.existing(e, false);
-
-       
-		}
-			break;
-
+ return selected;
 
 		
-		}
-		},5000);
 }
 
 </script>
